@@ -8,7 +8,7 @@ termioslib is a simple no-nonsense wrapper for UNIX termios.h. It exposes all th
 
 ## Installation
 
-1. Make sure you have the a working Go environment. See the [install instructions](http://golang.org/doc/install.html). termios targets the 'release' tag. To get the release tag, simply run `hg update -r release`. If you're running an outdated version of Go, or a version near the , it likely won't compile. 
+1. Make sure you have the a working Go environment. See the [install instructions](http://golang.org/doc/install.html). termios targets the 'release' tag. To get the release tag, simply run `hg update -r release`.
 2. Make sure that $GOROOT is set. termios installs itself as a Go package, so it requires $GOROOT. See Go's install instructions for more information about $GOROOT. 
 2. git clone git://github.com/wdreeveii/termioslib.git
 3. cd termioslib && make install
