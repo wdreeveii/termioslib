@@ -9,10 +9,4 @@ TARG=termioslib
 CGOFILES=\
 	termioslib.go
 
-#ifeq ($(GOOS),darwin)
-#CGO_LDFLAGS=/usr/lib/libsqlite3.0.dylib
-#else
-#CGO_LDFLAGS=-L/usr/local/lib/oeis -lsqlite3
-#endif
-
 include $(GOROOT)/src/Make.pkg
