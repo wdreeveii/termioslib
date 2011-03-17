@@ -79,6 +79,10 @@ termioslib is a simple no-nonsense wrapper for UNIX termios.h. It exposes all th
 		}
 	}
 
+## Future
+
+Once the differences between Linux and Mac termios.h have been identified, the architecture dependent defines and functions will be pushed into separate files as directed in the last section of [How to write go code](http://golang.org/doc/code.html).
+
 ## About 
 
 termioslib was written by Whitham D. Reeve II
