@@ -18,6 +18,7 @@ termioslib is a simple no-nonsense wrapper for UNIX termios.h. It exposes all th
 	package main
 	
 	import (
+	    "os"
 	    "errors"
 	    "fmt"
 	    "termioslib"
