@@ -18,15 +18,15 @@ termioslib is a simple no-nonsense wrapper for UNIX termios.h. It exposes all th
 	package main
 	
 	import (
-	    "fmt";
-	    "os";
-	    "termioslib";
+	    "errors"
+	    "fmt"
+	    "termioslib"
 	)
 	
 	
 	func main () {
 	    var (
-			err os.Error
+			err error
 			orig_termios termioslib.Termios
 			work_termios termioslib.Termios
 			serial_port *os.File
