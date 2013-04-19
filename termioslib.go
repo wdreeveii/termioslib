@@ -11,7 +11,6 @@ package termioslib
 import "C"
 
 import (
-	"os"
 	"unsafe"
 )
 
@@ -41,14 +40,14 @@ const (
 	VINTR		= uint (C.VINTR);
 	VQUIT		= uint (C.VQUIT);
 	VSUSP		= uint (C.VSUSP);
-	VDSUSP		= uint (C.VDSUSP);
+	//VDSUSP		= uint (C.VDSUSP);
 	VSTART		= uint (C.VSTART);
 	VSTOP		= uint (C.VSTOP);
 	VLNEXT		= uint (C.VLNEXT);
 	VDISCARD	= uint (C.VDISCARD);
 	VMIN		= uint (C.VMIN);
 	VTIME		= uint (C.VTIME);
-	VSTATUS		= uint (C.VSTATUS);
+	//VSTATUS		= uint (C.VSTATUS);
 	/* 19 is spare */
 	NCCS		= uint (C.NCCS)
 )
@@ -75,8 +74,8 @@ const (
 const (
 	OPOST		= tcflag_t (C.OPOST); 	/* enable following output processing */
 	ONLCR		= tcflag_t (C.ONLCR); 	/* map NL to CR-NL (ala CRMOD) */
-	OXTABS		= tcflag_t (C.OXTABS); 	/* expand tabs to spaces */
-	ONOEOT		= tcflag_t (C.ONOEOT) 	/* discard EOT's (^D) on output) */
+	//OXTABS		= tcflag_t (C.OXTABS); 	/* expand tabs to spaces */
+	//ONOEOT		= tcflag_t (C.ONOEOT) 	/* discard EOT's (^D) on output) */
 )
 
 // Standard speeds
@@ -98,11 +97,11 @@ const (
 	B19200		= speed_t (C.B19200);
 	B38400		= speed_t (C.B38400);
 	// non posix but generally supported none the less
-	B7200		= speed_t (C.B7200);
-	B14400		= speed_t (C.B14400);
-	B28800		= speed_t (C.B28800);
+	//B7200		= speed_t (C.B7200);
+	//B14400		= speed_t (C.B14400);
+	//B28800		= speed_t (C.B28800);
 	B57600		= speed_t (C.B57600);
-	B76800		= speed_t (C.B76800);
+	//B76800		= speed_t (C.B76800);
 	B115200		= speed_t (C.B115200);
 	B230400		= speed_t (C.B230400);
 	EXTA		= speed_t (C.EXTA);
@@ -111,7 +110,7 @@ const (
 
 // Control flags - hardware control of terminal
 const (
-	CIGNORE		= tcflag_t (C.CIGNORE);	/* ignore control flags */
+	//CIGNORE		= tcflag_t (C.CIGNORE);	/* ignore control flags */
 	CSIZE		= tcflag_t (C.CSIZE);	/* character size mask */
 		CS5		= tcflag_t (C.CS5);		/* 5 bits (pseudo) */
 		CS6		= tcflag_t (C.CS6);		/* 6 bits */
@@ -123,13 +122,13 @@ const (
 	PARODD		= tcflag_t (C.PARODD);	/* odd parity, else even */
 	HUPCL		= tcflag_t (C.HUPCL);	/* hang up on last close */
 	CLOCAL		= tcflag_t (C.CLOCAL);	/* ignore modem status lines */
-	CCTS_OFLOW	= tcflag_t (C.CCTS_OFLOW);	/* CTS flow control of output */
-	CRTS_IFLOW	= tcflag_t (C.CRTS_IFLOW);	/* RTS flow control of input */
+	//CCTS_OFLOW	= tcflag_t (C.CCTS_OFLOW);	/* CTS flow control of output */
+	//CRTS_IFLOW	= tcflag_t (C.CRTS_IFLOW);	/* RTS flow control of input */
 	CRTSCTS		= tcflag_t (C.CRTSCTS);
-	CDTR_IFLOW	= tcflag_t (C.CDTR_IFLOW);	/* DTR flow control of input */
-	CDSR_OFLOW	= tcflag_t (C.CDSR_OFLOW);	/* DSR flow control of output */
-	CCAR_OFLOW	= tcflag_t (C.CCAR_OFLOW);	/* DCD flow control of output */
-	MDMBUF		= tcflag_t (C.MDMBUF)		/* old name for CCAR_OFLOW */
+	//CDTR_IFLOW	= tcflag_t (C.CDTR_IFLOW);	/* DTR flow control of input */
+	//CDSR_OFLOW	= tcflag_t (C.CDSR_OFLOW);	/* DSR flow control of output */
+	//CCAR_OFLOW	= tcflag_t (C.CCAR_OFLOW);	/* DCD flow control of output */
+	//MDMBUF		= tcflag_t (C.MDMBUF)		/* old name for CCAR_OFLOW */
 )
 
 // "Local" flags - dumping ground for other state
@@ -143,12 +142,12 @@ const (
 	ECHOCTL		= tcflag_t (C.ECHOCTL);	/* echo control chars as ^(Char) */
 	ISIG		= tcflag_t (C.ISIG);	/* enable signals INTR, QUIT, [D]SUSP */
 	ICANON		= tcflag_t (C.ICANON);	/* canonicalize input lines */
-	ALTWERASE	= tcflag_t (C.ALTWERASE);	/* use alternate WERASE algorithm */
+	//ALTWERASE	= tcflag_t (C.ALTWERASE);	/* use alternate WERASE algorithm */
 	IEXTEN		= tcflag_t (C.IEXTEN);	/* enable DISCARD and LNEXT */
 	EXTPROC		= tcflag_t (C.EXTPROC);	/* external processing */
 	TOSTOP		= tcflag_t (C.TOSTOP);	/* stop background jobs from output */
 	FLUSHO		= tcflag_t (C.FLUSHO);	/* output being flushed (state) */
-	NOKERNINFO	= tcflag_t (C.NOKERNINFO);	/* no kernel output from VSTATUS */
+	//NOKERNINFO	= tcflag_t (C.NOKERNINFO);	/* no kernel output from VSTATUS */
 	PENDIN		= tcflag_t (C.PENDIN);	/* XXX retype pending input (state) */
 	NOFLSH		= tcflag_t (C.NOFLSH)	/* don't flush after interrupt */
 )
@@ -183,73 +182,50 @@ func Getospeed (src * Termios) (result speed_t) {
 }
 
 //int	cfsetispeed(struct Termios *, speed_t);
-func Setispeed(dst * Termios, baud speed_t) (err os.Error) {
-	rv := C.cfsetispeed((*C.struct_termios)(unsafe.Pointer(dst)), C.speed_t(baud))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Setispeed(dst * Termios, baud speed_t) (error) {
+	_,rv := C.cfsetispeed((*C.struct_termios)(unsafe.Pointer(dst)), C.speed_t(baud))
+	return rv
 }
 
 //int	cfsetospeed(struct Termios *, speed_t);
-func Setospeed(dst * Termios, baud speed_t) (err os.Error) {
-	rv := C.cfsetospeed((*C.struct_termios)(unsafe.Pointer(dst)), C.speed_t(baud))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Setospeed(dst * Termios, baud speed_t) (error) {
+	_,rv := C.cfsetospeed((*C.struct_termios)(unsafe.Pointer(dst)), C.speed_t(baud))
+	return rv
 }
 
-func Getattr(fd int, dst * Termios) (err os.Error) {
-	rv := C.tcgetattr(C.int(fd),(*C.struct_termios)(unsafe.Pointer(dst)))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Getattr(fd int, dst * Termios) (error) {
+	_,rv := C.tcgetattr(C.int(fd),(*C.struct_termios)(unsafe.Pointer(dst)))
+	return rv
 }
 
 //int	tcsetattr(int, int, const struct termios *);
-func Setattr(fd int, optional_action int, src * Termios) (err os.Error) {
-	rv := C.tcsetattr(C.int(fd), C.int(optional_action), (*C.struct_termios)(unsafe.Pointer(src)))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Setattr(fd int, optional_action int, src * Termios) (error) {
+	_,rv := C.tcsetattr(C.int(fd), C.int(optional_action), (*C.struct_termios)(unsafe.Pointer(src)))
+	return rv
 }
 
 //int	tcdrain(int) __DARWIN_ALIAS_C(tcdrain);
-func Drain(fd int) (err os.Error) {
-	rv := C.tcdrain(C.int(fd))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Drain(fd int) (error) {
+	_, rv := C.tcdrain(C.int(fd))
+	return rv
 }
 
 //int	tcflow(int, int);
-func Flow(fd int, action int) (err os.Error) {
-	rv := C.tcflow(C.int(fd), C.int(action))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Flow(fd int, action int) (error) {
+	_,rv := C.tcflow(C.int(fd), C.int(action))
+	return rv
 }
 
 //int	tcflush(int, int);
-func Flush(fd int, queue_selector int) (err os.Error) {
-	rv := C.tcflush(C.int(fd), C.int(queue_selector))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Flush(fd int, queue_selector int) (error) {
+	_, rv := C.tcflush(C.int(fd), C.int(queue_selector))
+	return rv
 }
 //int	tcsendbreak(int, int);
-func Sendbreak(fd int, duration int) (err os.Error) {
-	rv := C.tcflush(C.int(fd), C.int(duration))
-	if rv != 0 {
-		return os.Errno(rv)
-	}
-	return nil
+func Sendbreak(fd int, duration int) (error) {
+	_, rv := C.tcflush(C.int(fd), C.int(duration))
+	return rv
+
 }
 //void	cfmakeraw(struct termios *);
 func Makeraw(src * Termios) {
@@ -257,10 +233,7 @@ func Makeraw(src * Termios) {
 }
 
 // int	cfsetspeed(struct termios *, speed_t);
-func Setspeed (dst * Termios, baud speed_t) (err os.Error) {
-	rv := C.cfsetspeed(((*C.struct_termios)(unsafe.Pointer(dst))), C.speed_t(baud))
-	if rv != 0 {
-			return os.Errno(rv)
-	}
-	return nil
+func Setspeed (dst * Termios, baud speed_t) (error) {
+	_, rv := C.cfsetspeed(((*C.struct_termios)(unsafe.Pointer(dst))), C.speed_t(baud))
+	return rv
 }
