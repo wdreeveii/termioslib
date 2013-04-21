@@ -26,62 +26,63 @@ termioslib is a simple no-nonsense wrapper for UNIX termios.h. It exposes all th
 	
 	func main () {
 	    var (
-			err os.Error
+			err error
 			orig_termios termioslib.Termios
 			work_termios termioslib.Termios
-			serial_port *os.File
+			ser *os.File
 	    )
 
 	    defer func () {
 	        if err != nil { fmt.Println (err) }
-	    } ();
+	    } ()
 	    
 	    // open the serial port, other options of interest may be os.NDELAY and os.NOCTTY
-		serial_port, err = os.Open("/dev/cu.usbserial-FTCW1RJN", os.O_RDWR , 777)
-		if err != nil { return }
+	    ser, err = os.Open("/dev/cu.usbserial-FTCW1RJN", os.O_RDWR , 777)
+	    if err != nil { return }
 		
-		defer func () {
-			serial_port.Close()
-		}();
+	    defer func () {
+		ser.Close()
+	    }()
 		
-		// flush all buffers
-		if err = termioslib.Flush(serial_port.Fd(), termioslib.TCIOFLUSH); err != nil { return }
+	    // flush all buffers
+	    if err = termioslib.Flush(ser.Fd(), termioslib.TCIOFLUSH); err != nil { return }
 		
-		// save a copy of the original terminal configuration
-	    if err = termioslib.Getattr(serial_port.Fd(), &orig_termios); err != nil { return }
+	    // save a copy of the original terminal configuration
+	    if err = termioslib.Getattr(ser.Fd(), &orig_termios); err != nil { return }
 	    
 	    // get a working copy
-		if err = termioslib.Getattr(serial_port.Fd(), &work_termios); err != nil { return }
-		
-		work_termios.C_iflag = (termioslib.IGNPAR)
-		work_termios.C_oflag = 0
-	    work_termios.C_cflag = (termioslib.CRTSCTS | termioslib.CS8 | termioslib.CLOCAL | termioslib.CREAD)
-	    work_termios.C_lflag = 0
-		work_termios.C_cc[termioslib.VMIN] = 1
-		work_termios.C_cc[termioslib.VTIME] = 0
-		
-		termioslib.Setspeed(&work_termios, termioslib.B57600)
-		// set the working copy
-		if err = termioslib.Setattr(serial_port.Fd(), termioslib.TCSANOW , &work_termios); err != nil { return }
-		
-		// set the settings back to the original when the program exits
-		defer func () {
-			err = termioslib.Setattr(serial_port.Fd(), termioslib.TCSANOW, &orig_termios)
-	    } ();
+	    if err = termioslib.Getattr(ser.Fd(), &work_termios); err != nil { return }
+	    
+	    work_termios.C_iflag &= ^(termioslib.IGNBRK | termioslib.BRKINT | termioslib.IGNPAR | termioslib.PARMRK | termioslib.INPCK | termioslib.ISTRIP | termioslib.INLCR | termioslib.IGNCR | termioslib.ICRNL | termioslib.IXON | termioslib.IXOFF | termioslib.IXANY | termioslib.IMAXBEL | termioslib.IUTF8)
+	    work_termios.C_oflag &= ^(termioslib.OPOST | termioslib.ONLCR )
+	    work_termios.C_lflag &= ^(termioslib.ISIG | termioslib.ICANON | termioslib.IEXTEN | termioslib.ECHO | termioslib.ECHOE | termioslib.ECHOK | termioslib.ECHONL | termioslib.NOFLSH | termioslib.TOSTOP | termioslib.ECHOPRT | termioslib.ECHOCTL | termioslib.ECHOKE)
+	    work_termios.C_cflag &= ^(termioslib.CSIZE | termioslib.PARENB | termioslib.PARODD | termioslib.HUPCL | termioslib.CSTOPB | termioslib.CRTSCTS)
+	    work_termios.C_cflag |= (termioslib.CS8 | termioslib.CREAD | termioslib.CLOCAL)
+	    work_termios.C_cc[termioslib.VMIN] = 1
+	    work_termios.C_cc[termioslib.VTIME] = 0
+	    
+	    termioslib.Setspeed(&work_termios, termioslib.B57600)
+	    // set the working copy
+	    if err = termioslib.Setattr(ser.Fd(), termioslib.TCSANOW , &work_termios); err != nil { return }
+	    
+	    // set the settings back to the original when the program exits
+	    defer func () {
+		err = termioslib.Setattr(ser.Fd(), termioslib.TCSANOW, &orig_termios)
+	    } ()
 	    
 	    // basic file read block
-		buffer := make([]byte, 80) 
-		n, err := serial_port.Read(buffer)
+	    buffer := make([]byte, 80) 
+	    n, err := ser.Read(buffer)
 	
-		for err == nil {
-			fmt.Printf("%s", string(buffer[0:n]))
-			n, err = serial_port.Read(buffer)
-		}
+	    for err == nil {
+		    fmt.Printf("%s", string(buffer[0:n]))
+		    n, err = ser.Read(buffer)
+	    }
 	}
 
 ## Future
 
-Once the differences between Linux and Mac termios.h have been identified, the architecture dependent defines and functions will be pushed into separate files as directed in the last section of [How to write go code](http://golang.org/doc/code.html).
+At one time or another, this code has worked on both Linux and Mac OS X. It was updated in April 2013 to go 1.0
 
 ## About 
 

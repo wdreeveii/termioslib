@@ -193,36 +193,36 @@ func Setospeed(dst * Termios, baud speed_t) (error) {
 	return rv
 }
 
-func Getattr(fd int, dst * Termios) (error) {
+func Getattr(fd uintptr, dst * Termios) (error) {
 	_,rv := C.tcgetattr(C.int(fd),(*C.struct_termios)(unsafe.Pointer(dst)))
 	return rv
 }
 
 //int	tcsetattr(int, int, const struct termios *);
-func Setattr(fd int, optional_action int, src * Termios) (error) {
+func Setattr(fd uintptr, optional_action int, src * Termios) (error) {
 	_,rv := C.tcsetattr(C.int(fd), C.int(optional_action), (*C.struct_termios)(unsafe.Pointer(src)))
 	return rv
 }
 
 //int	tcdrain(int) __DARWIN_ALIAS_C(tcdrain);
-func Drain(fd int) (error) {
+func Drain(fd uintptr) (error) {
 	_, rv := C.tcdrain(C.int(fd))
 	return rv
 }
 
 //int	tcflow(int, int);
-func Flow(fd int, action int) (error) {
+func Flow(fd uintptr, action int) (error) {
 	_,rv := C.tcflow(C.int(fd), C.int(action))
 	return rv
 }
 
 //int	tcflush(int, int);
-func Flush(fd int, queue_selector int) (error) {
+func Flush(fd uintptr, queue_selector int) (error) {
 	_, rv := C.tcflush(C.int(fd), C.int(queue_selector))
 	return rv
 }
 //int	tcsendbreak(int, int);
-func Sendbreak(fd int, duration int) (error) {
+func Sendbreak(fd uintptr, duration int) (error) {
 	_, rv := C.tcflush(C.int(fd), C.int(duration))
 	return rv
 
