@@ -157,7 +157,7 @@ const (
 
 //speed_t	cfgetispeed(const struct Termios *);
 func Getispeed (src * Termios) (result C.speed_t) {
-	result = C.cfgetispeed(&(src.i))
+	result = C.cfgetispeed(&src.i)
 	return
 }
 
@@ -222,7 +222,7 @@ func Setattr(fd uintptr, optional_action int, src * Termios) (error) {
 	src.i.c_cflag = src.C_cflag
 	src.i.c_lflag = src.C_lflag
 	src.i.c_cc = src.C_cc
-	_,rv := C.tcsetattr(C.int(fd), C.TCSANOW, &src.i)
+	_,rv := C.tcsetattr(C.int(fd), C.int(optional_action), &src.i)
 	return rv
 }
 
