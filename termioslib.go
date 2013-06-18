@@ -7,6 +7,7 @@ package termioslib
 
 /*
 #include <termios.h>
+#include <unistd.h>
 */
 import "C"
 
@@ -85,13 +86,8 @@ const (
 	B4800		= C.speed_t(C.B4800)
 	B9600		= C.speed_t(C.B9600)
 	B19200		= C.speed_t(C.B19200)
-	B38400		= C.speed_t(C.B38400 )
-	// non posix but generally supported none the less
-	//B7200		= C.speed_t(C.B7200)
-	//B14400		= C.speed_t(C.B14400)
-	//B28800		= C.speed_t(C.B28800)
+	B38400		= C.speed_t(C.B38400)
 	B57600		= C.speed_t(C.B57600)
-	//B76800		= C.speed_t(C.B76800)
 	B115200		= C.speed_t(C.B115200)
 	B230400		= C.speed_t(C.B230400)
 	EXTA		= C.speed_t(C.EXTA)
@@ -161,7 +157,7 @@ const (
 
 //speed_t	cfgetispeed(const struct Termios *);
 func Getispeed (src * Termios) (result C.speed_t) {
-	result = C.cfgetispeed(&src.i)
+	result = C.cfgetispeed(&(src.i))
 	return
 }
 
@@ -173,13 +169,37 @@ func Getospeed (src * Termios) (result C.speed_t) {
 
 //int	cfsetispeed(struct Termios *, speed_t);
 func Setispeed(dst * Termios, baud C.speed_t) (error) {
+	dst.i.c_iflag = dst.C_iflag
+	dst.i.c_oflag = dst.C_oflag
+	dst.i.c_cflag = dst.C_cflag
+	dst.i.c_lflag = dst.C_lflag
+	dst.i.c_cc = dst.C_cc
 	_,rv := C.cfsetispeed(&dst.i, baud)
+	if rv == nil {
+		dst.C_iflag = dst.i.c_iflag
+		dst.C_oflag = dst.i.c_oflag
+		dst.C_cflag = dst.i.c_cflag
+		dst.C_lflag = dst.i.c_lflag
+		dst.C_cc	= dst.i.c_cc
+	}
 	return rv
 }
 
 //int	cfsetospeed(struct Termios *, speed_t);
 func Setospeed(dst * Termios, baud C.speed_t) (error) {
+	dst.i.c_iflag = dst.C_iflag
+	dst.i.c_oflag = dst.C_oflag
+	dst.i.c_cflag = dst.C_cflag
+	dst.i.c_lflag = dst.C_lflag
+	dst.i.c_cc = dst.C_cc
 	_,rv := C.cfsetospeed(&dst.i, baud)
+	if rv == nil {
+		dst.C_iflag = dst.i.c_iflag
+		dst.C_oflag = dst.i.c_oflag
+		dst.C_cflag = dst.i.c_cflag
+		dst.C_lflag = dst.i.c_lflag
+		dst.C_cc	= dst.i.c_cc
+	}
 	return rv
 }
 
@@ -202,7 +222,7 @@ func Setattr(fd uintptr, optional_action int, src * Termios) (error) {
 	src.i.c_cflag = src.C_cflag
 	src.i.c_lflag = src.C_lflag
 	src.i.c_cc = src.C_cc
-	_,rv := C.tcsetattr(C.int(fd), C.int(optional_action), &src.i)
+	_,rv := C.tcsetattr(C.int(fd), C.TCSANOW, &src.i)
 	return rv
 }
 
@@ -236,6 +256,18 @@ func Makeraw(src * Termios) {
 
 // int	cfsetspeed(struct termios *, speed_t);
 func Setspeed (dst * Termios, baud C.speed_t) (error) {
+	dst.i.c_iflag = dst.C_iflag
+	dst.i.c_oflag = dst.C_oflag
+	dst.i.c_cflag = dst.C_cflag
+	dst.i.c_lflag = dst.C_lflag
+	dst.i.c_cc = dst.C_cc
 	_, rv := C.cfsetspeed(&dst.i, baud)
+	if rv == nil {
+		dst.C_iflag = dst.i.c_iflag
+		dst.C_oflag = dst.i.c_oflag
+		dst.C_cflag = dst.i.c_cflag
+		dst.C_lflag = dst.i.c_lflag
+		dst.C_cc	= dst.i.c_cc
+	}
 	return rv
 }
